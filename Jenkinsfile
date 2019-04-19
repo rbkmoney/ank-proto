@@ -1,7 +1,7 @@
 #!groovy
 // -*- mode: groovy -*-
 
-build('file-storage-proto', 'docker-host') {
+build('ank-proto', 'docker-host') {
     checkoutRepo()
     loadBuildUtils()
 
