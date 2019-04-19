@@ -10,7 +10,7 @@ TEMPLATES_PATH := .
 SERVICE_NAME := ank-proto
 
 # Build image tag to be used
-BUILD_IMAGE_TAG := 55e987e74e9457191a5b4a7c5dc9e3838ae82d2b
+BUILD_IMAGE_TAG := fcf116dd775cc2e91bffb6a36835754e3f2d5321
 CALL_ANYWHERE := \
 	all submodules rebar-update compile clean distclean \
 	java.compile java.deploy
