@@ -1,5 +1,6 @@
 include "base.thrift"
 include "msgpack.thrift"
+include "questionary.thrift"
 
 namespace java com.rbkmoney.questionary.manage
 namespace erlang questionary_manager
@@ -7,53 +8,35 @@ namespace erlang questionary_manager
 // id анкеты
 typedef base.ID QuestionaryID
 // id владельца анкеты
-typedef base.ID EntityID
-// Информация в анкете
-typedef map<string, msgpack.Value> QuestionaryData
+typedef base.ID OwnerID
 
 exception QuestionaryNotFound {}
 
 struct Questionary {
-    1: required QuestionaryID     id
-    2: required EntityID          entity_id
-    3: required QuestionaryType   type
-    4: required QuestionaryState  state
-    5: required QuestionaryData   data
+    1: required QuestionaryID    id
+    2: required OwnerID          owner_id
+    3: required QuestionaryData  owner
 }
 
 struct QuestionaryParams {
-    1: required QuestionaryID   id
-    2: required EntityID        entity_id
-    3: required QuestionaryType type
-    4: required QuestionaryData data
+    1: required QuestionaryID    id
+    2: required OwnerID          owner_id
+    3: required QuestionaryData  owner
 }
 
-union QuestionaryState {
-    1: QuestionaryCreated  created
-    2: QuestionaryReview   review
-    3: QuestionaryApproved approved
-    4: QuestionaryDenied   denied
-}
-
-struct QuestionaryCreated {}
-struct QuestionaryReview {}
-struct QuestionaryApproved {}
-struct QuestionaryDenied {}
-
-enum QuestionaryType {
-    individual_person
-    legal_person
+/* Содержание анкеты */
+union QuestionaryData {
+    1: questionary.LegalEntity      legal_entity
+    2: questionary.IndividualEntity individual_entity
 }
 
 /**
-* Сервис для создания/редактирования анкеты
-**/
+* Сервис для работы с анкетами
+*/
 service QuestionaryManager {
 
-    Questionary Create(1: QuestionaryParams params)
+    Questionary Create(1: QuestionaryParams params) throws (1: QuestionaryNotFound ex)
 
     Questionary Get(1: QuestionaryID id) throws (1: QuestionaryNotFound ex)
-
-    Questionary ChangeState(1: QuestionaryID id, 2: QuestionaryState state)
 
 }
