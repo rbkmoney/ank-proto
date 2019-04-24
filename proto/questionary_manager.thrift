@@ -11,6 +11,8 @@ typedef base.ID OwnerID
 
 exception QuestionaryNotFound {}
 
+exception QuestionaryNotValidException {}
+
 struct Questionary {
     1: required QuestionaryID    id
     2: required OwnerID          owner_id
@@ -34,7 +36,7 @@ union QuestionaryData {
 */
 service QuestionaryManager {
 
-    Questionary Create(1: QuestionaryParams params) throws (1: QuestionaryNotFound ex)
+    Questionary Create(1: QuestionaryParams params) throws (1: QuestionaryNotFound ex 2: QuestionaryNotValidException ex)
 
     Questionary Get(1: QuestionaryID id) throws (1: QuestionaryNotFound ex)
 
