@@ -1,5 +1,4 @@
 include "base.thrift"
-include "msgpack.thrift"
 include "questionary.thrift"
 
 namespace java com.rbkmoney.questionary.manage
