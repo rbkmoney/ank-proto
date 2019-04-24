@@ -14,13 +14,13 @@ exception QuestionaryNotFound {}
 struct Questionary {
     1: required QuestionaryID    id
     2: required OwnerID          owner_id
-    3: required QuestionaryData  owner
+    3: required QuestionaryData  data
 }
 
 struct QuestionaryParams {
     1: required QuestionaryID    id
     2: required OwnerID          owner_id
-    3: required QuestionaryData  owner
+    3: required QuestionaryData  data
 }
 
 /* Содержание анкеты */
