@@ -36,7 +36,11 @@ union QuestionaryData {
 */
 service QuestionaryManager {
 
-    Questionary Create(1: QuestionaryParams params) throws (1: QuestionaryNotFound ex 2: QuestionaryNotValidException ex)
+    Questionary Create(1: QuestionaryParams params)
+        throws (
+            1: QuestionaryNotFound ex1
+            2: QuestionaryNotValidException ex2
+        )
 
     Questionary Get(1: QuestionaryID id) throws (1: QuestionaryNotFound ex)
 
