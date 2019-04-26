@@ -305,7 +305,7 @@ struct LegalOwnerInfo {
     3: required IdentityDocument identity_document
     4: optional MigrationCardInfo migration_card_info
     5: optional ResidenceApprove residence_approve
-    6: required bool pdl_catedory
+    6: required bool pdl_category
 }
 
 /* Бенефициарный владелец */
@@ -316,7 +316,7 @@ struct BeneficialOwner {
     4: required IdentityDocument identity_document
     5: optional MigrationCardInfo migration_card_info
     6: optional ResidenceApprove residence_approve
-    7: required bool pdl_catedory
+    7: required bool pdl_category
 }
 
 /* В отношении индивидуального предпринимателя */
