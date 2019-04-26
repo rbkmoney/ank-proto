@@ -310,7 +310,7 @@ struct LegalOwnerInfo {
 
 /* Бенефициарный владелец */
 struct BeneficialOwner {
-    1: required i8 ownership_percentage
+    1: required i16 ownership_percentage
     2: RussianPrivateEntity russian_private_entity
     3: optional string inn
     4: required IdentityDocument identity_document
