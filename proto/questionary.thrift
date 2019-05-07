@@ -7,10 +7,7 @@ namespace erlang questionary
 typedef string CardNumber
 
 /* Основной ОКВЭД */
-typedef string OKVD
-
-/* Вид деятельности, фактически осуществляемый предпринимателем */
-typedef string ActivityType
+typedef string OKVED
 
 /* Сведения о договоре аренды или регистрации права на недвижимость */
 typedef string PropertyInfo
@@ -19,74 +16,72 @@ typedef string URL
 
 /* Контактная информация */
 struct ContactInfo {
-    1: required string phone_number
-    2: required string email
-    3: required URL site
+    1: optional string phone_number
+    2: optional string email
 }
 
-struct IdentityDocument {
-    /* Наименование документа */
-    1: required string name
-    2: IdentityDocumentDetails identity_document_details
-}
-
-union IdentityDocumentDetails {
+union IdentityDocument {
     1: RussianDomesticPassport russian_domestic_password
 }
 
 struct RussianDomesticPassport {
     1: optional string series
-    2: required string number
+    2: optional string number
     /* Наименование выдавшего паспорт органа */
-    3: required string issuer
+    3: optional string issuer
     /* Код подразделения выдавшего паспорт органа */
     4: optional string issuer_code
     /* Дата выдачи паспорта */
-    5: required base.Timestamp issued_at
+    5: optional base.Timestamp issued_at
+}
+
+struct PersonAnthroponym {
+    /* Имя */
+    1: optional string first_name
+    /* Фамилия */
+    2: optional string second_name
+    /* Отчество */
+    3: optional string middle_name
 }
 
 struct RussianPrivateEntity {
-    /* Имя */
-    1: required string first_name
-    /* Фамилия */
-    2: required string second_name
-    /* Отчество */
-    3: optional string middle_name
+    /* ФИО */
+    1: optional PersonAnthroponym fio
     /* Дата рождения */
-    4: required base.Timestamp birth_date
+    2: optional base.Timestamp birth_date
     /* Место рождения */
-    5: required string birth_place
+    3: optional string birth_place
     /* Гражданство */
-    6: required string citizenship
+    4: optional string citizenship
     /* Адрес места жительства */
-    7: required string residence_address
+    5: optional string residence_address
     /* Фактический адрес */
-    8: optional string actual_address
+    6: optional string actual_address
     /* Контактная информация */
-    9: optional string contact_info
+    7: optional ContactInfo contact_info
 }
 
 /* Сведения о принадлежности физического лица к некоторым категориям граждан */
 struct IndividualPersonCategories {
     /* Является иностранным публичным должностным лицом */
-    1: required bool foreign_public_person
+    1: optional bool foreign_public_person
     /* Является родственником инностранного публичного должностного лица */
-    2: required bool foreign_relative_person
+    2: optional bool foreign_relative_person
     /* Действует от имени иностранного лица */
-    3: required bool behalf_of_foreign
+    3: optional bool behalf_of_foreign
     /* Является должностным лицом публичной международной организации; лицом замещающим государственные должности */
-    4: required bool worldwide_org_public_person
+    4: optional bool worldwide_org_public_person
     /* Имеется представитель клиента */
-    5: required bool has_representative
+    5: optional bool has_representative
     /* Бенефициарным владельцем клиента является сам клиент */
-    6: required bool beneficial_owner
+    6: optional bool beneficial_owner
 }
 
 /* Сведения о миграционной карте */
 struct MigrationCardInfo {
-    1: required CardNumber card_number
+    1: optional CardNumber card_number
     /* Дата начала срока пребывания */
-    2: required base.Timestamp beginning_date
+    2: optional base.Timestamp beginning_date
     /* Дата окончания срока пребывания */
     3: optional base.Timestamp expiration_date
 }
@@ -94,13 +89,13 @@ struct MigrationCardInfo {
 /* Сведения о документе подтверждающем право пребывания в РФ */
 struct ResidenceApprove {
     /* Наименования документа */
-    1: required string name
+    1: optional string name
     2: optional string series
-    3: required string number
+    3: optional string number
     /* Дата начала срока действия права пребывания (проживания) */
-    4: required base.Timestamp beginning_date
+    4: optional base.Timestamp beginning_date
     /* Дата окончания срока действия права пребывания (проживания) */
-    5: required base.Timestamp expiration_date
+    5: optional base.Timestamp expiration_date
 }
 
 union RegistrationInfo {
@@ -111,74 +106,82 @@ union RegistrationInfo {
 /* Сведения о регистрации в качестве индивидуального предпринимателя */
 struct IndividualRegistrationInfo {
     /* ОГРНИП */
-    1: required string ogrnip
+    1: optional string ogrnip
     /* Дата регистрации */
-    2: required base.Timestamp registration_date
+    2: optional base.Timestamp registration_date
     /* Место государственной регистрации */
-    3: required string registration_place
+    3: optional string registration_place
 }
 
 /* Сведения о регистрации юридического лица */
 struct LegalRegistrationInfo {
     /* ОГРН */
-    1: required string ogrn
+    1: optional string ogrn
     /* Дата государственной регистрации */
-    2: required base.Timestamp registration_date
+    2: optional base.Timestamp registration_date
     /* Место государственной регистрации */
-    3: required string registration_place
+    3: optional string registration_place
     /* Адрес регистрации юридического лица */
-    4: required string registration_address
+    4: optional string registration_address
     /* Фактический адрес */
     5: optional string actual_address
 }
 
 /* Сведения о лицензии на право осуществления деятельности */
 struct LicenseInfo {
-    /* Вид */
-    1: required string type
-    2: required string number
-    /* Дата выдачи лицензии */
-    3: required base.Timestamp issue_date
-    /* Кем выдана */
-    4: required string issuer
-    /* Срок действия */
-    5: required base.Timestamp validity
-    /* Перечень видов лицензируемой деятельности */
-    6: optional list<string> types_licensed_activities
+    1: optional string officialNum
+    2: optional string issuerName
+    3: optional base.Timestamp issue_date
+    4: optional base.Timestamp effective_date
+    5: optional base.Timestamp expiration_date
+    /* Описание вида лицензируемой деятельности */
+    6: optional string licensed_activity
+}
+
+struct ShopDetails {
+    1: optional string name
+    2: optional string description
+}
+
+union ShopLocation {
+    1: URL url
+}
+
+struct ShopInfo {
+    1: optional ShopLocation location
+    2: optional ShopDetails details
 }
 
 /**
 *  Сведения о целях установления и предполагаемом характере отношения с НКО,
-*  сведения о целях финансково-хозяйственной деятельности индвидидуального предпринимателя,
+*  сведения о целях финансово-хозяйственной деятельности индвидидуального предпринимателя,
 *  деловая репутация
 */
 struct AdditionalInfo {
     /* Штатная численность */
-    1: required i32 staff_count
+    1: optional i32 staff_count
     /* Наличие в штате главного бухгалтера */
-    2: required bool has_accountant
+    2: optional bool has_accountant
     /* Бух.учет ведется самим предпринимателем (в случае отстутсвия в штате главного бухгалтера) */
     3: optional string accounting
     /* Сведения об организации, ведущей бухгалтерский учет (наименование, договор, иной документ) */
     4: optional string accounting_org
     /* Цели установления деловых отношения с НКО */
-    5: required string NKO_relation_target
+    5: optional string NKO_relation_target
     /* Предполагаемый характер деловых отношений с НКО */
-    6: required string relationship_with_NKO
-    7: required MonthOperationCount month_operation_count
-    8: required MonthOperationSum month_operation_sum
-    9: required list<FinancialPosition> financial_position
-    10: required list<BusinessInfo> business_info
+    6: optional string relationship_with_NKO
+    7: optional MonthOperationCount month_operation_count
+    8: optional MonthOperationSum month_operation_sum
+    9: optional list<FinancialPosition> financial_position
+    10: optional list<BusinessInfo> business_info
     /* Наличие складских помещений */
-    11: required bool storage_facilities
+    11: optional bool storage_facilities
     /* Основные контагенты */
-    12: required string main_counterparties
+    12: optional string main_counterparties
     13: optional RelationIndividualEntity relation_individual_entity
     /* Действует ли к выгоде третьх лиц */
-    14: required bool benefit_third_parties
-    15: required BusinessReputation business_reputation
-    /* Банковские реквизиты */
-    16: required string bank_details
+    14: optional bool benefit_third_parties
+    15: optional BusinessReputation business_reputation
 }
 
 /**
@@ -286,37 +289,92 @@ union ResidencyInfo {
 
 struct IndividualResidencyInfo {
     // Является ли налоговым резидентом США или иного иностранного государства
-    1: required bool tax_resident
+    1: optional bool tax_resident
 }
 
 struct LegalResidencyInfo {
      // Является ли налоговым резидентом США или иного иностранного государства
-     1: required bool tax_resident
+     1: optional bool tax_resident
      // Является ли Бенефициарный владалей резидентом иностранного государства
-     2: required bool owner_resident
+     2: optional bool owner_resident
      // Является ли организация Финансовым Инсистутом в соответсвии с FATCA и 173-ФЗ
-     3: required bool fatca
+     3: optional bool fatca
 }
 
 /* Сведения о единоличном исполнительном органе юридического лица */
 struct LegalOwnerInfo {
-    1: required RussianPrivateEntity russian_private_entity
+    1: optional RussianPrivateEntity russian_private_entity
     2: optional string inn;
-    3: required IdentityDocument identity_document
+    3: optional IdentityDocument identity_document
     4: optional MigrationCardInfo migration_card_info
     5: optional ResidenceApprove residence_approve
-    6: required bool pdl_category
+    6: optional bool pdl_catedory
 }
 
 /* Бенефициарный владелец */
 struct BeneficialOwner {
-    1: required i16 ownership_percentage
-    2: RussianPrivateEntity russian_private_entity
+    1: optional i8 ownership_percentage
+    2: optional RussianPrivateEntity russian_private_entity
     3: optional string inn
-    4: required IdentityDocument identity_document
+    4: optional IdentityDocument identity_document
     5: optional MigrationCardInfo migration_card_info
     6: optional ResidenceApprove residence_approve
-    7: required bool pdl_category
+    7: optional bool pdl_catedory
+}
+
+/* Деятельность осуществляемая организацией */
+struct Activity {
+    1: optional OKVED code
+    2: optional string description
+}
+
+struct IndividualPerson {
+    1: optional PersonAnthroponym fio
+    2: optional string inn
+}
+
+/* Руководитель */
+struct Head {
+    1: optional IndividualPerson individual_person
+    2: optional string position
+}
+
+struct RussianLegalEntityFounder {
+    1: optional string inn
+    2: optional string ogrn
+    /* Полное наименование юридического лица */
+    3: optional string fullName
+}
+
+struct InternationalLegalEntityFounder {
+    1: optional string country
+    /* Полное наименование юридического лица */
+    2: optional string fullName
+}
+
+union Founder {
+    1: IndividualPerson individual_person_founder
+    2: RussianLegalEntityFounder russian_legal_entity_founder
+    3: InternationalLegalEntityFounder international_legal_entity_founder
+}
+
+/* Сведения об учредителях */
+struct FoundersInfo {
+    1: optional list<Founder> founders
+    2: optional list<Head> heads
+    3: optional Head legal_owner
+}
+
+union BankAccount {
+    1: RussianBankAccount russian_bank_account
+}
+
+/* Банковский счёт. */
+struct RussianBankAccount {
+    1: optional string account
+    2: optional string bank_name
+    3: optional string bank_post_account
+    4: optional string bank_bik
 }
 
 /* В отношении индивидуального предпринимателя */
@@ -349,59 +407,58 @@ enum BusinessReputation {
     no_reviews // Нет возможности предоставить отзыв
 }
 
-union IndividualEntity {
-    1: RussianIndividualEntity       russian_individual_entity
-}
-
-union LegalEntity {
-    1: RussianLegalEntity       russian_legal_entity
-}
-
 /* Анкета юридического лица, резидент РФ */
 struct RussianLegalEntity {
     /* Наименование, фирменное наименование на русском языке */
-    1: required string name
+    1: optional string name
     /* Наименование, фирменное наименование на иностранном языке */
     2: optional string foreign_name
     /* Организационно-правовая форма */
-    3: required string legal_form
+    3: optional string legal_form
     4: optional string inn
-    5: required RegistrationInfo registration_info
+    5: optional RegistrationInfo registration_info
     /* Наличие дополнительных площадей */
-    6: required string additional_space
-    7: required PropertyInfo property_info
+    6: optional string additional_space
+    7: optional list<PropertyInfo> property_info
     /* код в соответствии с ОКАТО */
     8: optional string okato_code
     /* код в соответствии с ОКПО */
     9: optional string okpo_code
-    10: required string postal_address
-    11: required ContactInfo contact_info
-    /* Сведения об органах юридического лица */
-    12: required list<string> legal_entities
-    13: required LicenseInfo license_info
-    14: required OKVD okvd
-    15: required ActivityType activity_type
-    16: required LegalOwnerInfo legal_owner_info
-    17: required list<BeneficialOwner> beneficial_owners
-    18: required AdditionalInfo additional_info
-    19: required ResidencyInfo residency_info
-
+    10: optional string postal_address
+    11: optional FoundersInfo founders_info
+    12: optional LicenseInfo license_info
+    13: optional Activity principal_activity
+    14: optional LegalOwnerInfo legal_owner_info
+    15: optional list<BeneficialOwner> beneficial_owners
+    16: optional AdditionalInfo additional_info
+    17: optional ResidencyInfo residency_info
 }
 
 /* Анкета индивидуального предпринимателя, резидент РФ */
 struct RussianIndividualEntity {
-    1: required RussianPrivateEntity russian_private_entity
-    2: required string inn
-    3: required IdentityDocument identity_document
-    4: required ContactInfo contact_info
-    5: required PropertyInfo property_info
+    1: optional RussianPrivateEntity russian_private_entity
+    2: optional string inn
+    3: optional IdentityDocument identity_document
+    5: optional list<PropertyInfo> property_info
     6: optional MigrationCardInfo migration_card_info
     7: optional ResidenceApprove residence_approve
-    8: required RegistrationInfo registration_info
-    9: required LicenseInfo license_info
-    10: required IndividualPersonCategories individual_person_categories
-    11: required OKVD okvd
-    12: required ActivityType activity_type
-    13: required AdditionalInfo additional_info
-    14: required ResidencyInfo residency_info
+    8: optional RegistrationInfo registration_info
+    9: optional LicenseInfo license_info
+    10: optional IndividualPersonCategories individual_person_categories
+    11: optional Activity principal_activity
+    12: optional AdditionalInfo additional_info
+    13: optional ResidencyInfo residency_info
+}
+
+union IndividualEntity {
+    1: RussianIndividualEntity russian_individual_entity
+}
+
+union LegalEntity {
+    1: RussianLegalEntity russian_legal_entity
+}
+
+union Contractor {
+    1: IndividualEntity individual_entity
+    2: LegalEntity legal_entity 
 }

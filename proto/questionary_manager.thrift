@@ -26,9 +26,11 @@ struct QuestionaryParams {
 }
 
 /* Содержание анкеты */
-union QuestionaryData {
-    1: questionary.LegalEntity      legal_entity
-    2: questionary.IndividualEntity individual_entity
+struct QuestionaryData {
+    1: optional questionary.Contractor   contractor
+    2: optional questionary.BankAccount  bank_account
+    3: optional questionary.ShopInfo     shop_info
+    4: optional questionary.ContactInfo  contact_info
 }
 
 /**
