@@ -319,7 +319,7 @@ struct BeneficialOwner {
     4: optional IdentityDocument identity_document
     5: optional MigrationCardInfo migration_card_info
     6: optional ResidenceApprove residence_approve
-    7: optional bool pdl_catedory
+    7: optional bool pdl_category
 }
 
 /* Деятельность осуществляемая организацией */
@@ -460,5 +460,5 @@ union LegalEntity {
 
 union Contractor {
     1: IndividualEntity individual_entity
-    2: LegalEntity legal_entity 
+    2: LegalEntity legal_entity
 }
