@@ -9,9 +9,28 @@ typedef base.ID QuestionaryID
 // id владельца анкеты
 typedef base.ID OwnerID
 
+typedef i64 Version
+
 exception QuestionaryNotFound {}
 
 exception QuestionaryNotValidException {}
+
+exception QuestionaryVersionConflict {}
+
+/**
+* Маркер вершины истории
+*/
+struct Head {}
+
+union Reference {
+    1: Version version
+    2: Head head
+}
+
+struct Snapshot {
+    1: Version version
+    2: Questionary questionary
+}
 
 struct Questionary {
     1: required QuestionaryID    id
@@ -38,12 +57,13 @@ struct QuestionaryData {
 */
 service QuestionaryManager {
 
-    Questionary Create(1: QuestionaryParams params)
+    Questionary Save(1: QuestionaryParams params, 2: Version version)
         throws (
             1: QuestionaryNotFound ex1
-            2: QuestionaryNotValidException ex2
+            2: QuestionaryNotValidException ex2,
+            3: QuestionaryVersionConflict ex3
         )
 
-    Questionary Get(1: QuestionaryID id) throws (1: QuestionaryNotFound ex)
+    Snapshot Get(1: Reference reference) throws (1: QuestionaryNotFound ex)
 
 }
