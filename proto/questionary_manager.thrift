@@ -64,6 +64,6 @@ service QuestionaryManager {
             3: QuestionaryVersionConflict ex3
         )
 
-    Snapshot Get(1: Reference reference) throws (1: QuestionaryNotFound ex)
+    Snapshot Get(1:QuestionaryID questionaryId, 2: Reference reference) throws (1: QuestionaryNotFound ex)
 
 }

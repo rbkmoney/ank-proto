@@ -308,7 +308,7 @@ struct LegalOwnerInfo {
     3: optional IdentityDocument identity_document
     4: optional MigrationCardInfo migration_card_info
     5: optional ResidenceApprove residence_approve
-    6: optional bool pdl_catedory
+    6: optional bool pdl_category
 }
 
 /* Бенефициарный владелец */
