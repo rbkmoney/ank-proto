@@ -57,13 +57,13 @@ struct QuestionaryData {
 */
 service QuestionaryManager {
 
-    Questionary Save(1: QuestionaryParams params, 2: Version version)
+    Version Save(1: QuestionaryParams params, 2: Version version)
         throws (
-            1: QuestionaryNotFound ex1
+            1: QuestionaryNotFound ex1,
             2: QuestionaryNotValidException ex2,
             3: QuestionaryVersionConflict ex3
         )
 
-    Snapshot Get(1: Reference reference) throws (1: QuestionaryNotFound ex)
+    Snapshot Get(1:QuestionaryID questionaryId, 2: Reference reference) throws (1: QuestionaryNotFound ex)
 
 }
