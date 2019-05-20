@@ -243,7 +243,7 @@ struct LetterOfGuarantee {}
 union BusinessInfo {
     1: WholesaleTradeBusiness wholesale_trade_business
     2: RetailTradeBusiness retail_trade_business
-    3: ProductionBusiness prodiction_business
+    3: ProductionBusiness production_business
     4: BuildingBusiness building_business
     5: TransportBusiness transport_business
     6: SecuritiesTradingBusiness securities_trading_business
