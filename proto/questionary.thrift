@@ -182,6 +182,7 @@ struct AdditionalInfo {
     /* Действует ли к выгоде третьх лиц */
     14: optional bool benefit_third_parties
     15: optional BusinessReputation business_reputation
+    16: optional BankAccount bank_account
 }
 
 /**
