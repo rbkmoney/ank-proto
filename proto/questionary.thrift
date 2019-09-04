@@ -172,15 +172,6 @@ union WithoutChiefAccountant {
     3: optional IndividualAccountant individual_accountant
 }
 
-/* Отсутствие в штате главного бухгалтера */
-struct WithoutChiefAccountant {
-    1: optional bool head_accounting
-    /* ИНН организации, ведущей бухгалтерский учет */
-    2: optional string accounting_organization_inn
-    /* Бух. учет ведет индивидуальный специалист */
-    3: optional bool individual_accountant
-}
-
 union AccountantInfo {
     1: optional WithChiefAccountant with_chief_accountant
     2: optional WithoutChiefAccountant without_chief_accountant
