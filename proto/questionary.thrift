@@ -9,10 +9,10 @@ typedef string CardNumber
 /* Основной ОКВЭД */
 typedef string OKVED
 
-/* Сведения о договоре аренды или регистрации права на недвижимость */
-typedef string PropertyInfo
-
 typedef string URL
+
+/* СНИЛС */
+typedef string SNILS
 
 /* Контактная информация */
 struct ContactInfo {
@@ -152,6 +152,40 @@ struct ShopInfo {
     2: optional ShopDetails details
 }
 
+/* Наличие в штате главного бухгалтера */
+struct WithChiefAccountant {}
+
+/* Бух. учет ведет руководитель организации */
+struct HeadAccounting {}
+
+/* Бух. учет ведет сторонняя организация */
+struct AccountingOrganization {
+    1: optional string inn
+}
+
+/* Бух. учет ведет индивидуальный специалист */
+struct IndividualAccountant {}
+
+union WithoutChiefAccountant {
+    1: optional HeadAccounting head_accounting
+    2: optional AccountingOrganization accounting_organization
+    3: optional IndividualAccountant individual_accountant
+}
+
+/* Отсутствие в штате главного бухгалтера */
+struct WithoutChiefAccountant {
+    1: optional bool head_accounting
+    /* ИНН организации, ведущей бухгалтерский учет */
+    2: optional string accounting_organization_inn
+    /* Бух. учет ведет индивидуальный специалист */
+    3: optional bool individual_accountant
+}
+
+union AccountantInfo {
+    1: optional WithChiefAccountant with_chief_accountant
+    2: optional WithoutChiefAccountant without_chief_accountant
+}
+
 /**
 *  Сведения о целях установления и предполагаемом характере отношения с НКО,
 *  сведения о целях финансово-хозяйственной деятельности индвидидуального предпринимателя,
@@ -160,29 +194,22 @@ struct ShopInfo {
 struct AdditionalInfo {
     /* Штатная численность */
     1: optional i32 staff_count
-    /* Наличие в штате главного бухгалтера */
-    2: optional bool has_accountant
-    /* Бух.учет ведется самим предпринимателем (в случае отстутсвия в штате главного бухгалтера) */
-    3: optional string accounting
-    /* Сведения об организации, ведущей бухгалтерский учет (наименование, договор, иной документ) */
-    4: optional string accounting_org
+    2: optional AccountantInfo accountant_info
     /* Цели установления деловых отношения с НКО */
-    5: optional string NKO_relation_target
+    3: optional string NKO_relation_target
     /* Предполагаемый характер деловых отношений с НКО */
-    6: optional string relationship_with_NKO
-    7: optional MonthOperationCount month_operation_count
-    8: optional MonthOperationSum month_operation_sum
-    9: optional list<FinancialPosition> financial_position
-    10: optional list<BusinessInfo> business_info
-    /* Наличие складских помещений */
-    11: optional bool storage_facilities
+    4: optional string relationship_with_NKO
+    5: optional MonthOperationCount month_operation_count
+    6: optional MonthOperationSum month_operation_sum
+    7: optional list<FinancialPosition> financial_position
+    8: optional list<BusinessInfo> business_info
     /* Основные контагенты */
-    12: optional string main_counterparties
-    13: optional RelationIndividualEntity relation_individual_entity
+    9: optional string main_counterparties
+    10: optional RelationIndividualEntity relation_individual_entity
     /* Действует ли к выгоде третьх лиц */
-    14: optional bool benefit_third_parties
-    15: optional BusinessReputation business_reputation
-    16: optional BankAccount bank_account
+    11: optional bool benefit_third_parties
+    12: optional BusinessReputation business_reputation
+    13: optional BankAccount bank_account
 }
 
 /**
@@ -289,8 +316,10 @@ union ResidencyInfo {
 }
 
 struct IndividualResidencyInfo {
-    // Является ли налоговым резидентом США или иного иностранного государства
-    1: optional bool tax_resident
+    // Является ли налогоплательщиком / налоговым резидентом США
+    1: optional bool usa_tax_resident
+    // Является ли налогоплательщиком / налоговым иного иностранного государства
+    2: optional bool except_usa_tax_resident
 }
 
 struct LegalResidencyInfo {
@@ -302,14 +331,27 @@ struct LegalResidencyInfo {
      3: optional bool fatca
 }
 
+/* Данные документа, подтверждающего полномичия */
+struct AuthorityConfirmingDocument {
+    1: optional string type
+    2: optional string number
+    3: optional base.Timestamp date
+}
+
 /* Сведения о единоличном исполнительном органе юридического лица */
 struct LegalOwnerInfo {
     1: optional RussianPrivateEntity russian_private_entity
-    2: optional string inn;
+    2: optional string inn
     3: optional IdentityDocument identity_document
     4: optional MigrationCardInfo migration_card_info
     5: optional ResidenceApprove residence_approve
     6: optional bool pdl_category
+    7: optional AuthorityConfirmingDocument authority_confirming_document
+    8: optional SNILS snils
+    /* Степень родства по отношению к ПДЛ*/
+    9: optional string pdl_relation_degree
+    // Срок полномочий
+    10: optional string term_of_office
 }
 
 /* Бенефициарный владелец */
@@ -321,6 +363,10 @@ struct BeneficialOwner {
     5: optional MigrationCardInfo migration_card_info
     6: optional ResidenceApprove residence_approve
     7: optional bool pdl_category
+    8: optional SNILS snils
+    /* Степень родства по отношению к ПДЛ*/
+    9: optional string pdl_relation_degree
+    10: optional ResidencyInfo residency_info
 }
 
 /* Деятельность осуществляемая организацией */
@@ -408,6 +454,28 @@ enum BusinessReputation {
     no_reviews // Нет возможности предоставить отзыв
 }
 
+/* Договор аренды */
+struct LeaseContract {}
+
+/* Договор субаренды */
+struct SubleaseContract {}
+
+/* Свидетельство о праве собственности */
+struct CertificateOfOwnership {}
+
+/* Иное */
+struct OtherPropertyInfoDocumentType {
+    1: optional string name
+}
+
+/* Тип документа, подтверждающий право нахождения по фактическому адресу */
+union PropertyInfoDocumentType {
+    1: LeaseContract lease_contract
+    2: SubleaseContract sublease_contract
+    3: CertificateOfOwnership certificate_of_ownership
+    4: OtherPropertyInfoDocumentType other_property_info_document_type
+}
+
 /* Анкета юридического лица, резидент РФ */
 struct RussianLegalEntity {
     /* Наименование, фирменное наименование на русском языке */
@@ -420,7 +488,6 @@ struct RussianLegalEntity {
     5: optional RegistrationInfo registration_info
     /* Наличие дополнительных площадей */
     6: optional string additional_space
-    7: optional list<PropertyInfo> property_info
     /* код в соответствии с ОКАТО */
     8: optional string okato_code
     /* код в соответствии с ОКПО */
@@ -433,6 +500,7 @@ struct RussianLegalEntity {
     15: optional list<BeneficialOwner> beneficial_owners
     16: optional AdditionalInfo additional_info
     17: optional ResidencyInfo residency_info
+    18: optional PropertyInfoDocumentType property_info_document_type
 }
 
 /* Анкета индивидуального предпринимателя, резидент РФ */
@@ -440,7 +508,6 @@ struct RussianIndividualEntity {
     1: optional RussianPrivateEntity russian_private_entity
     2: optional string inn
     3: optional IdentityDocument identity_document
-    5: optional list<PropertyInfo> property_info
     6: optional MigrationCardInfo migration_card_info
     7: optional ResidenceApprove residence_approve
     8: optional RegistrationInfo registration_info
@@ -449,6 +516,9 @@ struct RussianIndividualEntity {
     11: optional Activity principal_activity
     12: optional AdditionalInfo additional_info
     13: optional ResidencyInfo residency_info
+    14: optional SNILS snils
+    15: optional PropertyInfoDocumentType property_info_document_type
+    16: optional list<BeneficialOwner> beneficial_owners
 }
 
 union IndividualEntity {
