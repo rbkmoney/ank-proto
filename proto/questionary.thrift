@@ -25,28 +25,18 @@ union IdentityDocument {
 }
 
 struct RussianDomesticPassport {
-    1: optional string series
-    2: optional string number
+    1: optional string series_number
     /* Наименование выдавшего паспорт органа */
-    3: optional string issuer
+    2: optional string issuer
     /* Код подразделения выдавшего паспорт органа */
-    4: optional string issuer_code
+    3: optional string issuer_code
     /* Дата выдачи паспорта */
-    5: optional base.Timestamp issued_at
-}
-
-struct PersonAnthroponym {
-    /* Имя */
-    1: optional string first_name
-    /* Фамилия */
-    2: optional string second_name
-    /* Отчество */
-    3: optional string middle_name
+    4: optional base.Timestamp issued_at
 }
 
 struct RussianPrivateEntity {
     /* ФИО */
-    1: optional PersonAnthroponym fio
+    1: optional string fio
     /* Дата рождения */
     2: optional base.Timestamp birth_date
     /* Место рождения */
@@ -201,6 +191,10 @@ struct AdditionalInfo {
     11: optional bool benefit_third_parties
     12: optional BusinessReputation business_reputation
     13: optional BankAccount bank_account
+    /* Наличие выгодопреобретателя */
+    14: optional bool has_beneficiary
+    /* Наличие решений о ликвидации или о любой процедуре, применяемой в деле о банкротстве */
+    15: optional bool has_liquidation_process
 }
 
 /**
@@ -343,6 +337,7 @@ struct LegalOwnerInfo {
     9: optional string pdl_relation_degree
     // Срок полномочий
     10: optional string term_of_office
+    11: optional string head_position
 }
 
 /* Бенефициарный владелец */
@@ -367,7 +362,7 @@ struct Activity {
 }
 
 struct IndividualPerson {
-    1: optional PersonAnthroponym fio
+    1: optional string fio
     2: optional string inn
 }
 
@@ -492,6 +487,7 @@ struct RussianLegalEntity {
     16: optional AdditionalInfo additional_info
     17: optional ResidencyInfo residency_info
     18: optional PropertyInfoDocumentType property_info_document_type
+    19: optional bool has_beneficial_owners
 }
 
 /* Анкета индивидуального предпринимателя, резидент РФ */
@@ -510,6 +506,7 @@ struct RussianIndividualEntity {
     14: optional SNILS snils
     15: optional PropertyInfoDocumentType property_info_document_type
     16: optional list<BeneficialOwner> beneficial_owners
+    17: optional bool has_beneficial_owners
 }
 
 union IndividualEntity {
