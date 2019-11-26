@@ -509,6 +509,7 @@ struct RussianIndividualEntity {
     17: optional bool has_beneficial_owners
     18: optional bool pdl_category
     19: optional string pdl_relation_degree
+    20: optional string name
 }
 
 union IndividualEntity {
