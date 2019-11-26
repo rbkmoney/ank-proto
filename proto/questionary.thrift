@@ -507,7 +507,9 @@ struct RussianIndividualEntity {
     15: optional PropertyInfoDocumentType property_info_document_type
     16: optional list<BeneficialOwner> beneficial_owners
     17: optional bool has_beneficial_owners
-    18: optional string name
+    18: optional bool pdl_category
+    19: optional string pdl_relation_degree
+    20: optional string name
 }
 
 union IndividualEntity {
