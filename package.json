@@ -1,0 +1,12 @@
+{
+  "name": "ank-proto",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rbkmoney/ank-proto.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rbkmoney/ank-proto/issues"
+  },
+  "homepage": "https://github.com/rbkmoney/ank-proto#readme"
+}
