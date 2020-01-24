@@ -13,7 +13,7 @@ typedef i64 Version
 
 exception QuestionaryNotFound {}
 
-exception QuestionaryNotValidException {}
+exception QuestionaryNotValid {}
 
 exception QuestionaryVersionConflict {}
 
@@ -59,7 +59,7 @@ service QuestionaryManager {
 
     Version Save(1: QuestionaryParams params, 2: Version version)
         throws (
-            1: QuestionaryNotValidException ex1,
+            1: QuestionaryNotValid ex1,
             2: QuestionaryVersionConflict ex2
         )
 
