@@ -8,6 +8,7 @@ namespace erlang questionary_manager
 typedef base.ID QuestionaryID
 // id владельца анкеты
 typedef base.ID OwnerID
+typedef base.ID PartyID
 
 typedef i64 Version
 
@@ -35,12 +36,14 @@ struct Snapshot {
 struct Questionary {
     1: required QuestionaryID    id
     2: required OwnerID          owner_id
+    4: required PartyID          party_id
     3: required QuestionaryData  data
 }
 
 struct QuestionaryParams {
     1: required QuestionaryID    id
     2: required OwnerID          owner_id
+    4: required PartyID          party_id
     3: required QuestionaryData  data
 }
 
@@ -63,6 +66,6 @@ service QuestionaryManager {
             2: QuestionaryVersionConflict ex2
         )
 
-    Snapshot Get(1:QuestionaryID questionaryId, 2: Reference reference) throws (1: QuestionaryNotFound ex)
+    Snapshot Get(1:QuestionaryID questionaryId, 2: PartyID partyId, 3: Reference reference) throws (1: QuestionaryNotFound ex)
 
 }
