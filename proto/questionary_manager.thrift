@@ -36,6 +36,7 @@ struct Snapshot {
 struct Questionary {
     1: required QuestionaryID    id
     2: required OwnerID          owner_id
+    4: required PartyID          party_id
     3: required QuestionaryData  data
 }
 
