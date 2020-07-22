@@ -517,7 +517,7 @@ struct InternationalLegalEntity {
     /* Торговое наименование (если применимо) */
     2: optional string trading_name
     /* Адрес места регистрации */
-    3: required string registered_address
+    3: optional string registered_address
     /* Адрес места нахождения (если отличается от регистрации)*/
     4: optional string actual_address
     /* Регистрационный номер */
