@@ -399,7 +399,8 @@ struct FoundersInfo {
 }
 
 union BankAccount {
-    1: RussianBankAccount russian_bank_account
+    1: RussianBankAccount        russian_bank_account
+    2: InternationalBankAccount  international_bank_account
 }
 
 /* Банковский счёт. */
@@ -408,6 +409,26 @@ struct RussianBankAccount {
     2: optional string bank_name
     3: optional string bank_post_account
     4: optional string bank_bik
+}
+
+struct InternationalBankAccount {
+    1: optional string                   number
+    2: optional InternationalBankDetails bank
+    3: optional InternationalBankAccount correspondent_account
+    // International Bank Account Number (ISO 13616)
+    4: optional string                   iban
+    // we have `InternationalLegalEntity.legal_name` for that purpose
+    5: optional string                   account_holder
+}
+
+struct InternationalBankDetails {
+    // Business Identifier Code (ISO 9362)
+    1: optional string         bic
+    2: optional base.Residence country
+    3: optional string         name
+    4: optional string         address
+    // ABA Routing Transit Number
+    5: optional string         aba_rtn
 }
 
 /* В отношении индивидуального предпринимателя */
@@ -490,6 +511,19 @@ struct RussianLegalEntity {
     19: optional bool has_beneficial_owners
 }
 
+struct InternationalLegalEntity {
+    /* Наименование */
+    1: optional string legal_name
+    /* Торговое наименование (если применимо) */
+    2: optional string trading_name
+    /* Адрес места регистрации */
+    3: optional string registered_address
+    /* Адрес места нахождения (если отличается от регистрации)*/
+    4: optional string actual_address
+    /* Регистрационный номер */
+    5: optional string registered_number
+}
+
 /* Анкета индивидуального предпринимателя, резидент РФ */
 struct RussianIndividualEntity {
     1: optional RussianPrivateEntity russian_private_entity
@@ -517,7 +551,8 @@ union IndividualEntity {
 }
 
 union LegalEntity {
-    1: RussianLegalEntity russian_legal_entity
+    1: RussianLegalEntity       russian_legal_entity
+    2: InternationalLegalEntity international_legal_entity
 }
 
 union Contractor {
