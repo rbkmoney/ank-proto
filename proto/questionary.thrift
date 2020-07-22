@@ -513,7 +513,7 @@ struct RussianLegalEntity {
 
 struct InternationalLegalEntity {
     /* Наименование */
-    1: required string legal_name
+    1: optional string legal_name
     /* Торговое наименование (если применимо) */
     2: optional string trading_name
     /* Адрес места регистрации */
